@@ -11,13 +11,18 @@ public class ShipObject extends GameObject {
 
     long lastShotTime;
     int livesLeft;
+    boolean hasShield;
 
     public ShipObject(int x, int y, int width, int height, String texturePath, World world) {
         super(texturePath, x, y, width, height, GameSettings.SHIP_BIT, world);
         body.setLinearDamping(10);
         livesLeft = GameSettings.MAX_LIVES;
+        hasShield = false;
     }
 
+    public void addShield() {
+        hasShield = true;
+    }
 
     public int getLiveLeft() {
         return livesLeft;
@@ -26,7 +31,13 @@ public class ShipObject extends GameObject {
     @Override
     public void draw(SpriteBatch batch) {
         putInFrame();
-        super.draw(batch);
+        if (hasShield) {
+            batch.setColor(0.3f, 0.5f, 1f, 1);
+            super.draw(batch);
+            batch.setColor(1, 1, 1, 1);
+        } else {
+            super.draw(batch);
+        }
     }
 
     public void move(Vector3 vector3) {
@@ -62,6 +73,10 @@ public class ShipObject extends GameObject {
 
     @Override
     public void hit() {
+        if (hasShield) {
+            hasShield = false;
+            return;
+        }
         livesLeft -= 1;
     }
 

@@ -269,11 +269,10 @@ public class GameScreen extends ScreenAdapter {
             boolean hasToBeDestroyed = bonusArray.get(i).isTaken() || !bonusArray.get(i).isInFrame();
 
             if (bonusArray.get(i).isTaken()) {
-                if (shipObject.getLiveLeft() < GameSettings.MAX_LIVES) {
-                    shipObject.addLife();
-                } else {
-                    maxHealthMessageTimer = TimeUtils.millis();
-                }
+                shipObject.addShield();
+                maxHealthTextView.setText("Shield Active!");
+                maxHealthTextView.setX((GameSettings.SCREEN_WIDTH - maxHealthTextView.getWidth()) / 2);
+                maxHealthMessageTimer = TimeUtils.millis();
             }
 
             if (hasToBeDestroyed) {
