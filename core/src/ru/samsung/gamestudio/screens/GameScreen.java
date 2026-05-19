@@ -26,6 +26,7 @@ public class GameScreen extends ScreenAdapter {
     ArrayList<TrashObject> trashArray;
     ArrayList<BulletObject> bulletArray;
     ArrayList<BonusObject> bonusArray;
+    ArrayList<BonusObject> shieldArray;
 
     ContactManager contactManager;
 
@@ -58,6 +59,7 @@ public class GameScreen extends ScreenAdapter {
         trashArray = new ArrayList<>();
         bulletArray = new ArrayList<>();
         bonusArray = new ArrayList<>();
+        shieldArray = new ArrayList<>();
 
         shipObject = new ShipObject(
                 GameSettings.SCREEN_WIDTH / 2, 150,
@@ -139,6 +141,15 @@ public class GameScreen extends ScreenAdapter {
                 bonusArray.add(bonusObject);
             }
 
+            if (TimeUtils.millis() % 15000 < 50) { // Примерно каждые 15 секунд спавним щит
+                BonusObject shieldObject = new BonusObject(
+                        GameSettings.BONUS_WIDTH, GameSettings.BONUS_HEIGHT,
+                        GameResources.SHIELD_IMG_PATH,
+                        myGdxGame.world
+                );
+                shieldArray.add(shieldObject);
+            }
+
             if (shipObject.needToShoot()) {
                 BulletObject laserBullet = new BulletObject(
                         shipObject.getX(), shipObject.getY() + shipObject.height / 2,
@@ -158,6 +169,7 @@ public class GameScreen extends ScreenAdapter {
             updateTrash();
             updateBullets();
             updateBonuses();
+            updateShields();
             backgroundView.move();
             gameSession.updateScore();
             scoreTextView.setText("Score: " + gameSession.getScore());
@@ -211,6 +223,7 @@ public class GameScreen extends ScreenAdapter {
         backgroundView.draw(myGdxGame.batch);
         for (TrashObject trash : trashArray) trash.draw(myGdxGame.batch);
         for (BonusObject bonus : bonusArray) bonus.draw(myGdxGame.batch);
+        for (BonusObject shield : shieldArray) shield.draw(myGdxGame.batch);
         shipObject.draw(myGdxGame.batch);
         for (BulletObject bullet : bulletArray) bullet.draw(myGdxGame.batch);
         topBlackoutView.draw(myGdxGame.batch);
@@ -269,6 +282,25 @@ public class GameScreen extends ScreenAdapter {
             boolean hasToBeDestroyed = bonusArray.get(i).isTaken() || !bonusArray.get(i).isInFrame();
 
             if (bonusArray.get(i).isTaken()) {
+                if (shipObject.getLiveLeft() < GameSettings.MAX_LIVES) {
+                    shipObject.addLife();
+                } else {
+                    maxHealthMessageTimer = TimeUtils.millis();
+                }
+            }
+
+            if (hasToBeDestroyed) {
+                myGdxGame.world.destroyBody(bonusArray.get(i).body);
+                bonusArray.remove(i--);
+            }
+        }
+    }
+
+    private void updateShields() {
+        for (int i = 0; i < shieldArray.size(); i++) {
+            boolean hasToBeDestroyed = shieldArray.get(i).isTaken() || !shieldArray.get(i).isInFrame();
+
+            if (shieldArray.get(i).isTaken()) {
                 shipObject.addShield();
                 maxHealthTextView.setText("Shield Active!");
                 maxHealthTextView.setX((GameSettings.SCREEN_WIDTH - maxHealthTextView.getWidth()) / 2);
@@ -276,8 +308,8 @@ public class GameScreen extends ScreenAdapter {
             }
 
             if (hasToBeDestroyed) {
-                myGdxGame.world.destroyBody(bonusArray.get(i).body);
-                bonusArray.remove(i--);
+                myGdxGame.world.destroyBody(shieldArray.get(i).body);
+                shieldArray.remove(i--);
             }
         }
     }
@@ -292,6 +324,11 @@ public class GameScreen extends ScreenAdapter {
         for (int i = 0; i < bonusArray.size(); i++) {
             myGdxGame.world.destroyBody(bonusArray.get(i).body);
             bonusArray.remove(i--);
+        }
+
+        for (int i = 0; i < shieldArray.size(); i++) {
+            myGdxGame.world.destroyBody(shieldArray.get(i).body);
+            shieldArray.remove(i--);
         }
 
         if (shipObject != null) {
