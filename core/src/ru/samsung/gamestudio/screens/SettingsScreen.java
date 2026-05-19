@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import ru.samsung.gamestudio.GameResources;
+import ru.samsung.gamestudio.GameSettings;
 import ru.samsung.gamestudio.managers.MemoryManager;
 import ru.samsung.gamestudio.MyGdxGame;
 import ru.samsung.gamestudio.components.ButtonView;
@@ -31,20 +32,22 @@ public class SettingsScreen extends ScreenAdapter {
         this.myGdxGame = myGdxGame;
 
         backgroundView = new MovingBackgroundView(GameResources.BACKGROUND_IMG_PATH);
-        titleTextView = new TextView(myGdxGame.largeWhiteFont, 256, 956, "Настройки");
+        titleTextView = new TextView(myGdxGame.largeWhiteFont, 0, 956, "Настройки");
+        titleTextView.setX((GameSettings.SCREEN_WIDTH - titleTextView.getWidth()) / 2);
+
         blackoutImageView = new ImageView(85, 365, GameResources.BLACKOUT_MIDDLE_IMG_PATH);
-        clearSettingView = new TextView(myGdxGame.commonWhiteFont, 173, 599, "очистить рекорды");
+        clearSettingView = new TextView(myGdxGame.commonWhiteFont, 173, 599, "Очистить рекорды");
 
         musicSettingView = new TextView(
                 myGdxGame.commonWhiteFont,
                 173, 717,
-                "музыка: " + translateStateToText(MemoryManager.loadIsMusicOn())
+                "Музыка: " + translateStateToText(MemoryManager.loadIsMusicOn())
         );
 
         soundSettingView = new TextView(
                 myGdxGame.commonWhiteFont,
                 173, 658,
-                "звук: " + translateStateToText(MemoryManager.loadIsSoundOn())
+                "Звук: " + translateStateToText(MemoryManager.loadIsSoundOn())
         );
 
         returnButton = new ButtonView(
@@ -52,7 +55,7 @@ public class SettingsScreen extends ScreenAdapter {
                 160, 70,
                 myGdxGame.commonBlackFont,
                 GameResources.BUTTON_SHORT_BG_IMG_PATH,
-                "назад"
+                "Назад"
         );
 
     }
@@ -88,16 +91,16 @@ public class SettingsScreen extends ScreenAdapter {
             }
             if (clearSettingView.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
                 MemoryManager.saveTableOfRecords(new ArrayList<>());
-                clearSettingView.setText("очистить рекорды (очищено)");
+                clearSettingView.setText("Очистить рекорды (очищено)");
             }
             if (musicSettingView.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
                 MemoryManager.saveMusicSettings(!MemoryManager.loadIsMusicOn());
-                musicSettingView.setText("музыка: " + translateStateToText(MemoryManager.loadIsMusicOn()));
+                musicSettingView.setText("Музыка: " + translateStateToText(MemoryManager.loadIsMusicOn()));
                 myGdxGame.audioManager.updateMusicFlag();
             }
             if (soundSettingView.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
                 MemoryManager.saveSoundSettings(!MemoryManager.loadIsSoundOn());
-                soundSettingView.setText("звук: " + translateStateToText(MemoryManager.loadIsSoundOn()));
+                soundSettingView.setText("Звук: " + translateStateToText(MemoryManager.loadIsSoundOn()));
                 myGdxGame.audioManager.updateSoundFlag();
             }
         }

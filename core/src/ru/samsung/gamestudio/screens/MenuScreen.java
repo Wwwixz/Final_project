@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 import ru.samsung.gamestudio.GameResources;
+import ru.samsung.gamestudio.GameSettings;
 import ru.samsung.gamestudio.MyGdxGame;
 import ru.samsung.gamestudio.components.ButtonView;
 import ru.samsung.gamestudio.components.MovingBackgroundView;
@@ -25,10 +26,12 @@ public class MenuScreen extends ScreenAdapter {
         this.myGdxGame = myGdxGame;
 
         backgroundView = new MovingBackgroundView(GameResources.BACKGROUND_IMG_PATH);
-        titleView = new TextView(myGdxGame.largeWhiteFont, 180, 960, "Космический уборщик");
-        startButtonView = new ButtonView(140, 646, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "старт");
-        settingsButtonView = new ButtonView(140, 551, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "настройки");
-        exitButtonView = new ButtonView(140, 456, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "выход");
+        titleView = new TextView(myGdxGame.largeWhiteFont, 0, 960, "Космический уборщик");
+        titleView.setX((GameSettings.SCREEN_WIDTH - titleView.getWidth()) / 2);
+
+        startButtonView = new ButtonView(140, 646, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "Старт");
+        settingsButtonView = new ButtonView(140, 551, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "Настройки");
+        exitButtonView = new ButtonView(140, 456, 440, 70, myGdxGame.commonBlackFont, GameResources.BUTTON_LONG_BG_IMG_PATH, "Выход");
     }
 
     @Override

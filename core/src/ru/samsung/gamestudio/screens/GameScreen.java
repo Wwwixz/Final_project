@@ -80,11 +80,13 @@ public class GameScreen extends ScreenAdapter {
                 GameResources.PAUSE_IMG_PATH
         );
 
-        maxHealthTextView = new TextView(myGdxGame.commonWhiteFont, 0, 640, "Здоровье на максимум");
+        maxHealthTextView = new TextView(myGdxGame.commonWhiteFont, 0, 640, "Здоровье восполнено");
         maxHealthTextView.setX((GameSettings.SCREEN_WIDTH - maxHealthTextView.getWidth()) / 2);
 
         fullBlackoutView = new ImageView(0, 0, GameResources.BLACKOUT_FULL_IMG_PATH);
-        pauseTextView = new TextView(myGdxGame.largeWhiteFont, 282, 842, "Пауза");
+        pauseTextView = new TextView(myGdxGame.largeWhiteFont, 0, 842, "Пауза");
+        pauseTextView.setX((GameSettings.SCREEN_WIDTH - pauseTextView.getWidth()) / 2);
+
         homeButton = new ButtonView(
                 138, 695,
                 200, 70,
@@ -101,8 +103,11 @@ public class GameScreen extends ScreenAdapter {
         );
 
         recordsListView = new RecordsListView(myGdxGame.commonWhiteFont, 690);
-        recordsTextView = new TextView(myGdxGame.largeWhiteFont, 206, 842, "Рекорды");
+        recordsTextView = new TextView(myGdxGame.largeWhiteFont, 0, 842, "Рекорды");
+        recordsTextView.setX((GameSettings.SCREEN_WIDTH - recordsTextView.getWidth()) / 2);
+
         yourScoreTextView = new TextView(myGdxGame.commonWhiteFont, 0, 930, "Ваш счёт: 0");
+        yourScoreTextView.setX((GameSettings.SCREEN_WIDTH - yourScoreTextView.getWidth()) / 2);
         homeButton2 = new ButtonView(
                 138, 365,
                 200, 70,
@@ -301,9 +306,10 @@ public class GameScreen extends ScreenAdapter {
             if (bonusArray.get(i).isTaken()) {
                 if (shipObject.getLiveLeft() < GameSettings.MAX_LIVES) {
                     shipObject.addLife();
-                } else {
-                    maxHealthMessageTimer = TimeUtils.millis();
                 }
+                maxHealthTextView.setText("Здоровье восполнено!");
+                maxHealthTextView.setX((GameSettings.SCREEN_WIDTH - maxHealthTextView.getWidth()) / 2);
+                maxHealthMessageTimer = TimeUtils.millis();
             }
 
             if (hasToBeDestroyed) {
