@@ -49,6 +49,8 @@ public class GameScreen extends ScreenAdapter {
     TextView recordsTextView;
     RecordsListView recordsListView;
     ButtonView homeButton2;
+    ButtonView restartButton;
+    TextView yourScoreTextView;
 
     public GameScreen(MyGdxGame myGdxGame) {
         this.myGdxGame = myGdxGame;
@@ -100,12 +102,20 @@ public class GameScreen extends ScreenAdapter {
 
         recordsListView = new RecordsListView(myGdxGame.commonWhiteFont, 690);
         recordsTextView = new TextView(myGdxGame.largeWhiteFont, 206, 842, "Last records");
+        yourScoreTextView = new TextView(myGdxGame.commonWhiteFont, 0, 930, "Your Score: 0");
         homeButton2 = new ButtonView(
-                280, 365,
-                160, 70,
+                138, 365,
+                200, 70,
                 myGdxGame.commonBlackFont,
                 GameResources.BUTTON_SHORT_BG_IMG_PATH,
                 "Home"
+        );
+        restartButton = new ButtonView(
+                393, 365,
+                200, 70,
+                myGdxGame.commonBlackFont,
+                GameResources.BUTTON_SHORT_BG_IMG_PATH,
+                "Restart"
         );
 
     }
@@ -141,7 +151,8 @@ public class GameScreen extends ScreenAdapter {
                 bonusArray.add(bonusObject);
             }
 
-            if (TimeUtils.millis() % 15000 < 50) { // Примерно каждые 15 секунд спавним щит
+            // Спавним щит только если его нет на экране
+            if (shieldArray.isEmpty() && TimeUtils.millis() % 15000 < 50) {
                 BonusObject shieldObject = new BonusObject(
                         GameSettings.BONUS_WIDTH, GameSettings.BONUS_HEIGHT,
                         GameResources.SHIELD_IMG_PATH,
@@ -164,6 +175,8 @@ public class GameScreen extends ScreenAdapter {
             if (!shipObject.isAlive()) {
                 gameSession.endGame();
                 recordsListView.setRecords(MemoryManager.loadRecordsTable());
+                yourScoreTextView.setText("Your Score: " + gameSession.getScore());
+                yourScoreTextView.setX((GameSettings.SCREEN_WIDTH - yourScoreTextView.getWidth()) / 2);
             }
 
             updateTrash();
@@ -203,7 +216,9 @@ public class GameScreen extends ScreenAdapter {
                     break;
 
                 case ENDED:
-
+                    if (restartButton.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
+                        restartGame();
+                    }
                     if (homeButton2.isHit(myGdxGame.touch.x, myGdxGame.touch.y)) {
                         myGdxGame.setScreen(myGdxGame.menuScreen);
                     }
@@ -243,8 +258,10 @@ public class GameScreen extends ScreenAdapter {
         } else if (gameSession.state == GameState.ENDED) {
             fullBlackoutView.draw(myGdxGame.batch);
             recordsTextView.draw(myGdxGame.batch);
+            yourScoreTextView.draw(myGdxGame.batch);
             recordsListView.draw(myGdxGame.batch);
             homeButton2.draw(myGdxGame.batch);
+            restartButton.draw(myGdxGame.batch);
         }
 
         myGdxGame.batch.end();
