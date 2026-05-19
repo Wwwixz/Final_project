@@ -15,7 +15,7 @@ public class GameResources {
 
     public static final String PAUSE_IMG_PATH = "textures/pause_icon.png";
     public static final String LIVE_IMG_PATH = "textures/life.png";
-    public static final String SHIELD_IMG_PATH = "textures/shield.jpg";
+    public static final String SHIELD_IMG_PATH = "textures/Shield.png";
 
     public static final String BULLET_IMG_PATH = "textures/bullet.png";
     public static final String SHIP_IMG_PATH = "textures/ship.png";

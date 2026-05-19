@@ -84,38 +84,38 @@ public class GameScreen extends ScreenAdapter {
         maxHealthTextView.setX((GameSettings.SCREEN_WIDTH - maxHealthTextView.getWidth()) / 2);
 
         fullBlackoutView = new ImageView(0, 0, GameResources.BLACKOUT_FULL_IMG_PATH);
-        pauseTextView = new TextView(myGdxGame.largeWhiteFont, 282, 842, "Pause");
+        pauseTextView = new TextView(myGdxGame.largeWhiteFont, 282, 842, "Пауза");
         homeButton = new ButtonView(
                 138, 695,
                 200, 70,
                 myGdxGame.commonBlackFont,
                 GameResources.BUTTON_SHORT_BG_IMG_PATH,
-                "Home"
+                "Меню"
         );
         continueButton = new ButtonView(
                 393, 695,
                 200, 70,
                 myGdxGame.commonBlackFont,
                 GameResources.BUTTON_SHORT_BG_IMG_PATH,
-                "Continue"
+                "Продолжить"
         );
 
         recordsListView = new RecordsListView(myGdxGame.commonWhiteFont, 690);
-        recordsTextView = new TextView(myGdxGame.largeWhiteFont, 206, 842, "Last records");
-        yourScoreTextView = new TextView(myGdxGame.commonWhiteFont, 0, 930, "Your Score: 0");
+        recordsTextView = new TextView(myGdxGame.largeWhiteFont, 206, 842, "Рекорды");
+        yourScoreTextView = new TextView(myGdxGame.commonWhiteFont, 0, 930, "Ваш счёт: 0");
         homeButton2 = new ButtonView(
                 138, 365,
                 200, 70,
                 myGdxGame.commonBlackFont,
                 GameResources.BUTTON_SHORT_BG_IMG_PATH,
-                "Home"
+                "Меню"
         );
         restartButton = new ButtonView(
                 393, 365,
                 200, 70,
                 myGdxGame.commonBlackFont,
                 GameResources.BUTTON_SHORT_BG_IMG_PATH,
-                "Restart"
+                "Заново"
         );
 
     }
@@ -175,7 +175,7 @@ public class GameScreen extends ScreenAdapter {
             if (!shipObject.isAlive()) {
                 gameSession.endGame();
                 recordsListView.setRecords(MemoryManager.loadRecordsTable());
-                yourScoreTextView.setText("Your Score: " + gameSession.getScore());
+                yourScoreTextView.setText("Ваш счёт: " + gameSession.getScore());
                 yourScoreTextView.setX((GameSettings.SCREEN_WIDTH - yourScoreTextView.getWidth()) / 2);
             }
 
@@ -185,7 +185,7 @@ public class GameScreen extends ScreenAdapter {
             updateShields();
             backgroundView.move();
             gameSession.updateScore();
-            scoreTextView.setText("Score: " + gameSession.getScore());
+            scoreTextView.setText("Счёт: " + gameSession.getScore());
             liveView.setLeftLives(shipObject.getLiveLeft());
 
             myGdxGame.stepWorld();
@@ -319,7 +319,7 @@ public class GameScreen extends ScreenAdapter {
 
             if (shieldArray.get(i).isTaken()) {
                 shipObject.addShield();
-                maxHealthTextView.setText("Shield Active!");
+                maxHealthTextView.setText("Щит активирован!");
                 maxHealthTextView.setX((GameSettings.SCREEN_WIDTH - maxHealthTextView.getWidth()) / 2);
                 maxHealthMessageTimer = TimeUtils.millis();
             }
